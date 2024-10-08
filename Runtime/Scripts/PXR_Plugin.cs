@@ -2514,7 +2514,7 @@ namespace Unity.XR.PXR
 
                 success = Pxr_UpdateAdaptiveResolution(ref dim, powerSetting);
                 width = dim.width;
-                PLog.i(TAG, "UPxr_UpdateAdaptiveResolution ：" + width);
+                //PLog.i(TAG, "UPxr_UpdateAdaptiveResolution ：" + width);
 #endif
                 return success;
             }
