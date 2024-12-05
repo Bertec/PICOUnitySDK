@@ -34,18 +34,26 @@ public class PXR_ControllerPower : MonoBehaviour
     public PXR_Input.Controller hand;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        powerMaterial = GetComponent<MeshRenderer>().material;
+        if (GetComponent<MeshRenderer>() != null)
+        {
+            powerMaterial = GetComponent<MeshRenderer>().material;
+            
+        }
+        else
+        {
+            powerMaterial = GetComponent<SkinnedMeshRenderer>().material;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    void OnEnable()
     {
-        interval -= Time.deltaTime;
-        if (interval > 0) return; 
-        interval = 2f;
+        RefreshPower();
+    }
 
+    private void RefreshPower()
+    {
         var curBattery = 0f;
         switch (hand)
         {
@@ -105,5 +113,16 @@ public class PXR_ControllerPower : MonoBehaviour
 
                 break;
         }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        interval -= Time.deltaTime;
+        if (interval > 0) 
+            return;
+        interval = 2f;
+
+        RefreshPower();
     }
 }

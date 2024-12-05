@@ -19,55 +19,134 @@ namespace Unity.XR.PXR
 {
     public static class PXR_Input
     {
+        /// <summary>Device models.</summary>
         public enum ControllerDevice
         {
+            /// <summary>PICO G2.</summary>
             G2 = 3,
+            /// <summary>PICO Neo2.</summary>
             Neo2,
+            /// <summary>PICO Neo3.</summary>
             Neo3,
+            /// <summary>PICO 4.</summary>
             PICO_4,
+            /// <summary>PICO G3.</summary>
             G3,
+            /// <summary>PICO 4 Ultra.</summary>
+            PICO_4U,
+            /// <summary>A new device model.</summary>
             NewController = 10
         }
 
+        /// <summmary>The controller types.</summary>
         public enum Controller
         {
+            /// <summary>Left controller.</summary>
             LeftController,
+            /// <summary>Right controller.</summary>
             RightController,
         }
 
+        /// <summary>For specifying which controller to vibrate.</summary>
         public enum VibrateController
         {
+            /// <summary>None.</summary>
             No = 0,
+            /// <summary>The left controller.</summary>
             Left = 1,
+            /// <summary>The right controller.</summary>
             Right = 2,
+            /// <summary>Both the left and right controllers.</summary>
             LeftAndRight = 3,
         }
 
+        /// <summary>For specifying the controller(s) to send the haptic data to.</summary>
         public enum VibrateType
         {
+            /// <summary>Both controllers.</summary>
             None = 0,
+            /// <summary>The left controller.</summary>
             LeftController = 1,
+            /// <summary>The right controller.</summary>
             RightController = 2,
+            /// <summary>Both controllers.</summary>
             BothController = 3,
+            /// <summary>The left controller of PICO 4 Ultra device.</summary>
+            LeftPICO4U = 4,
+            /// <summary>The right controller of PICO 4 Ultra device.</summary>
+            RightPICO4U = 8,
+            /// <summary>Both controllers of PICO 4 Ultra device.</summary>
+            BothPICO4U = 12,
         }
 
+        /// <summary>Whether to keep the controller vibrating while caching haptic data.</summary>
         public enum CacheType
         {
+            /// <summary>Don't cache.</summary>
             DontCache = 0,
+            /// <summary>Cache haptic data and keep vibrating.</summary>
             CacheAndVibrate = 1,
+            /// <summary>Cache haptic data and stop vibrating.</summary>
             CacheNoVibrate = 2,
         }
 
+        /// <summary>Whether to enable audio channel inversion. Once audio channel inversion is enabled, the left controller vibrates with the audio data from the right channel, and vice versa.</summary>
         public enum ChannelFlip
         {
+            /// <summary>Disable audio channel inversion.</summary>
             No,
+            /// <summary>Enable audio channel inversion.</summary>
             Yes,
         }
 
-        public enum CacheConfig {
+        /// <summary>Whether to keep the controller vibrating while caching audio-based vibration data.</summary>
+        public enum CacheConfig
+        {
+            /// <summary>Cache audio-based vibration data and keep vibrating.</summary>
             CacheAndVibrate = 1,
+            /// <summary>Cache audio-based vibration data and stop vibrating.</summary>
             CacheNoVibrate = 2,
         }
+
+        /// <summary>The status of controllers.</summary>
+        public enum ControllerStatus
+        {
+            /// <summary>The controller is static.</summary>
+            Static = 0,
+            /// <summary>The controller is in 6DoF tracking mode.</summary>
+            SixDof,
+            /// <summary>The controller is in 3DoF tracking mode.</summary>
+            ThreeDof,
+            /// <summary>The controller remains static for a long time and is now in sleep mode.</summary>
+            Sleep,
+            /// <summary>The controller collided with something else during 3DoF tracking.</summary>
+            CollidedIn3Dof,
+            /// <summary>The controller collided with something else during 6DoF tracking.</summary>
+            CollidedIn6Dof,
+        }
+
+        /// <summary>Gets the status of the specified controller.</summary>
+        /// <param name="controller">Specifies the controller to get status for: `LeftController` or `RightController`.</param>
+        /// <returns>The status of the specified controller:
+        /// - `static`: the controller is static
+        /// - `SixDof`: the controller is in 6DoF tracking mode
+        /// - `ThreeDof`: the controller is in 3DoF tracking mode
+        /// - `Sleep`: the controller remains static for a long time and is now in sleep mode
+        /// - `CollidedIn3Dof`: the controller collided with something else during 3DoF tracking
+        /// - `CollidedIn6Dof`: the controller collided with something else during 6DoF tracking
+        /// </returns>
+        public static ControllerStatus GetControllerStatus(Controller controller)
+        {
+            PxrControllerTracking pxrControllerTracking = new PxrControllerTracking();
+            float[] headData = new float[7] { 0, 0, 0, 0, 0, 0, 0 };
+
+            PXR_Plugin.Controller.UPxr_GetControllerTrackingState((uint)controller, PXR_Plugin.System.UPxr_GetPredictedDisplayTime(), headData, ref pxrControllerTracking);
+
+            return (ControllerStatus)pxrControllerTracking.localControllerPose.status;
+        }
+
+        /// <summary>A callback that indicates the input source (hand poses/controllers) has changed.</summary>
+        public static Action<ActiveInputDevice> InputDeviceChanged;
 
         /// <summary>
         /// Gets the current dominant controller.
@@ -522,7 +601,7 @@ namespace Unity.XR.PXR
         {
             return PXR_Plugin.Controller.UPxr_UpdateVibrateParams(sourceId, (int)vibrateController, (int)channelFlip, amp);
         }
-        
+
         /// <summary>
         /// Gets the data about the poses of body joints.
         /// </summary>
@@ -532,14 +611,14 @@ namespace Unity.XR.PXR
         {
             return PXR_Plugin.Controller.UPxr_GetBodyTrackingPose(predictTime, ref bodyTrackerResult);
         }
-        
+
         /// <summary>
         /// Gets the number of PICO Motion Trackers currently connected and their IDs.
         /// </summary>
         /// <param name="state">The number and IDs of connected PICO Motion Trackers.</param>
-        public static int GetFitnessBandConnectState(ref PxrFitnessBandConnectState state)
+        public static int GetMotionTrackerConnectStateWithID(ref PxrMotionTracker1ConnectState state)
         {
-            return PXR_Plugin.Controller.UPxr_GetFitnessBandConnectState(ref state);
+            return PXR_Plugin.Controller.UPxr_GetMotionTrackerConnectStateWithID(ref state);
         }
 
         /// <summary>
@@ -547,9 +626,9 @@ namespace Unity.XR.PXR
         /// </summary>
         /// <param name="trackerId">The ID of the motion tracker to get battery for.</param>
         /// <param name="battery">The motion tracker's battery. Value range: [0,5]. The smaller the value, the lower the battery level.</param>
-        public static int GetFitnessBandBattery(int trackerId, ref int battery)
+        public static int GetMotionTrackerBattery(int trackerId, ref int battery)
         {
-            return PXR_Plugin.Controller.UPxr_GetFitnessBandBattery(trackerId, ref battery);
+            return PXR_Plugin.Controller.UPxr_GetMotionTrackerBattery(trackerId, ref battery);
         }
 
         /// <summary>
@@ -559,25 +638,28 @@ namespace Unity.XR.PXR
         /// `0`: calibration uncompleted
         /// `1`: calibration completed
         /// </param>
-        public static int GetFitnessBandCalibState(ref int calibrated) {
-            return PXR_Plugin.Controller.UPxr_GetFitnessBandCalibState(ref calibrated);
+        public static int GetMotionTrackerCalibState(ref int calibrated)
+        {
+            return PXR_Plugin.Controller.UPxr_GetMotionTrackerCalibState(ref calibrated);
         }
 
         /// <summary>
         /// Sets a body tracking mode for PICO Motion Tracker. If this API is not called, the mode defaults to leg tracking.
-        /// @note If you want to set the mode to full-body tracking, you must call this API before calling `OpenFitnessBandCalibrationAPP`.
+        /// @note If you want to set the mode to full-body tracking, you must call this API before calling `OpenMotionTrackerCalibrationAPP`.
         /// </summary>
         /// <param name="mode">Selects a body tracking mode from the following:
-        /// * `0`: leg tracking, nodes numbered 0 to 15 in `BodyTrackerRole` enum will return data.
-        /// * `1`: full-body tracking, nodes numbered 0 to 23 in `BodyTrackerRole` enum will return data.
+        /// * Motion Tracker 1.0  `0`: leg tracking, nodes numbered 0 to 15 in `BodyTrackerRole` enum will return data.
+        /// * Motion Tracker 1.0  `1`: full-body tracking, nodes numbered 0 to 23 in `BodyTrackerRole` enum will return data.
+        /// * Motion Tracker 2.0  `0`: full-body tracking, nodes numbered 0 to 23 in `BodyTrackerRole` enum will return data. Low latency.
+        /// * Motion Tracker 2.0  `1`: full-body tracking, nodes numbered 0 to 23 in `BodyTrackerRole` enum will return data. High latency.
         /// </param>
         /// <returns>
         /// * `0`: success
         /// * `1`: failure
         /// </returns>
-        public static int SetSwiftMode(int mode)
+        public static int SetBodyTrackingMode(BodyTrackingMode mode)
         {
-            return PXR_Plugin.Controller.UPxr_SetSwiftMode(mode);
+            return PXR_Plugin.Controller.UPxr_SetBodyTrackingMode(mode);
         }
 
         /// <summary>
@@ -591,13 +673,6 @@ namespace Unity.XR.PXR
         public static int SetBodyTrackingBoneLength(BodyTrackingBoneLength boneLength)
         {
             return PXR_Plugin.Controller.UPxr_SetBodyTrackingBoneLength(boneLength);
-        }
-
-        /// <summary>
-        /// Launches the calibration app if the PICO Motion Tracker hasn't completed calibration.
-        /// </summary>
-        public static void OpenFitnessBandCalibrationAPP() {
-            PXR_Plugin.System.UPxr_OpenFitnessBandCalibrationAPP();
         }
 
         /// <summary>
@@ -950,7 +1025,7 @@ namespace Unity.XR.PXR
         /// </summary>
         /// <param name="source_id">The ID of the stream.</param>
         /// <returns>
-        /// * `0`: success
+        /// * `0`: successGetMotionTrackerCalibState
         /// * `1`: failure
         /// </returns>
         public static int RemoveHapticStream(int source_id)
@@ -1000,4 +1075,3 @@ namespace Unity.XR.PXR
 
     }
 }
-

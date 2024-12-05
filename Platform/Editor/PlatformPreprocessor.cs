@@ -26,14 +26,11 @@ namespace Pico.Platform.Editor
 
         public void OnPreprocessBuild(BuildReport report)
         {
-			if (PXR_PlatformSetting.Instance!=null)
-			{
-				string configAppID = PXR_PlatformSetting.Instance.appID.Trim();
-				if (string.IsNullOrWhiteSpace(configAppID))
-				{
-					Debug.LogWarning("appID is not configured");
-				}
-			}
-		}
-	}
+            string configAppID = PXR_PlatformSetting.Instance.appID.Trim();
+            if (string.IsNullOrWhiteSpace(configAppID))
+            {
+                Debug.LogWarning("appID is not configured");
+            }
+        }
+    }
 }

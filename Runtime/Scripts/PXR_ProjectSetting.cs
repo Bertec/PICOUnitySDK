@@ -11,6 +11,7 @@ PICO Technology Co., Ltd.
 *******************************************************************************/
 
 using System.IO;
+using UnityEditor;
 using UnityEngine;
 
 namespace Unity.XR.PXR
@@ -20,6 +21,8 @@ namespace Unity.XR.PXR
     {
         public bool useContentProtect;
         public bool handTracking;
+        public bool adaptiveHand;
+        public bool highFrequencyHand;
         public bool openMRC;
         public bool faceTracking;
         public bool lipsyncTracking;
@@ -34,11 +37,21 @@ namespace Unity.XR.PXR
         public bool stageMode;
         public bool videoSeeThrough;
         public bool spatialAnchor;
+        public bool sceneCapture;
+        public bool sharedAnchor;
+        public bool spatialMesh;
+        public PxrMeshLod meshLod;
         public bool superResolution;
         public bool normalSharpening;
         public bool qualitySharpening;
         public bool fixedFoveatedSharpening;
         public bool selfAdaptiveSharpening;
+
+        public bool arFoundation;
+        public bool mrSafeguard;
+        public bool enableRecommendMSAA;
+        public bool recommendSubsamping;
+        public bool recommendMSAA;
 
         public static PXR_ProjectSetting GetProjectConfig()
         {
@@ -49,6 +62,8 @@ namespace Unity.XR.PXR
                 projectConfig = CreateInstance<PXR_ProjectSetting>();
                 projectConfig.useContentProtect = false;
                 projectConfig.handTracking = false;
+                projectConfig.adaptiveHand = false;
+                projectConfig.highFrequencyHand = false;
                 projectConfig.openMRC = true;
                 projectConfig.faceTracking = false;
                 projectConfig.lipsyncTracking = false;
@@ -63,11 +78,21 @@ namespace Unity.XR.PXR
                 projectConfig.stageMode = false;
                 projectConfig.videoSeeThrough = false;
                 projectConfig.spatialAnchor = false;
+                projectConfig.sceneCapture = false;
+                projectConfig.sharedAnchor = false;
+                projectConfig.spatialMesh = false;
                 projectConfig.superResolution = false;
                 projectConfig.normalSharpening = false;
                 projectConfig.qualitySharpening = false;
                 projectConfig.fixedFoveatedSharpening = false;
                 projectConfig.selfAdaptiveSharpening = false;
+                projectConfig.arFoundation = false;
+                projectConfig.mrSafeguard = false;
+                projectConfig.enableRecommendMSAA = false;
+                projectConfig.recommendSubsamping = false;
+                projectConfig.recommendMSAA = false;
+                projectConfig.meshLod = PxrMeshLod.Low;
+
                 string path = Application.dataPath + "/Resources";
                 if (!Directory.Exists(path))
                 {
@@ -82,5 +107,13 @@ namespace Unity.XR.PXR
 #endif
             return projectConfig;
         }
+
+#if UNITY_EDITOR
+        public static void SaveAssets()
+        {
+            EditorUtility.SetDirty(GetProjectConfig());
+            UnityEditor.AssetDatabase.SaveAssets();
+        }
+#endif
     }
 }

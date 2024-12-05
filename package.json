@@ -1,7 +1,7 @@
 {
   "name": "com.unity.xr.picoxr",
   "displayName": "PICO Integration",
-  "version": "2.5.3",
+  "version": "3.0.5",
   "unity": "2022.3",
   "documentationUrl": "https://github.com/Bertec/PicoUnitySDK",
   "changelogUrl": "https://github.com/Bertec/PicoUnitySDK",
@@ -15,8 +15,10 @@
   ],
   "dependencies": {
     "com.unity.xr.management": "4.5.0",
-    "com.unity.xr.interaction.toolkit": "3.0.3"
+    "com.unity.xr.interaction.toolkit": "3.0.3",
+    "com.unity.xr.core-utils": "2.4.0"
   },
   "author": "Bertec Corporation",
-  "description": "PICO Integration for Unity"
+  "description": "PICO Integration for Unity",
+  "unityRelease": "53f1"
 }
