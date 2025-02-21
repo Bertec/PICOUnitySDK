@@ -51,7 +51,7 @@ namespace Unity.XR.PXR.Editor
                 }
 
             }
-            return false;
+            return true;
         }
 
         public static void OnBuild(BuildPlayerOptions options)
