@@ -8,7 +8,10 @@
         "Unity.XR.Hands",
         "Unity.XR.PICO.LivePreview"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Android",
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": true,
     "overrideReferences": false,

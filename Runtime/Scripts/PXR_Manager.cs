@@ -170,7 +170,8 @@ namespace Unity.XR.PXR
         public static event Action<PxrSemiAutoRoomCaptureCandidatesUpdate> SemiAutoRoomCaptureCandidatesUpdate;
         public static event Action<PxrEventSpatialTrackingStateInfo> SpatialTrackingStateInfo;
 
-        void Awake()
+#if UNITY_ANDROID
+		  void Awake()
         {
             //version log
             Debug.Log("PXRLog XR Platform----SDK Version:" + PXR_Plugin.System.UPxr_GetSDKVersion());
@@ -1203,8 +1204,9 @@ namespace Unity.XR.PXR
             PLog.i(TAG_MRC, $"Pxr_GetMrcY : {mrcY} , Camera.main.transform.localPosition.y={ Camera.main.transform.localPosition.y}");
         }
 
-        #endregion
-    }
+		#endregion
+#endif
+	}
     public struct CameraData
     {
         public string id;

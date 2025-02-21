@@ -19,6 +19,8 @@ namespace Unity.XR.PXR
 {
     public class PXR_OverlayManager : MonoBehaviour
     {
+#if UNITY_ANDROID
+
         private void OnEnable()
         {
 #if UNITY_2019_1_OR_NEWER
@@ -608,5 +610,6 @@ namespace Unity.XR.PXR
                 }
             }
         }
-    }
+#endif
+	}
 }

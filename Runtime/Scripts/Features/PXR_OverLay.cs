@@ -136,6 +136,7 @@ namespace Unity.XR.PXR
             return layerDepth.CompareTo(other.layerDepth);
         }
 
+#if UNITY_ANDROID
         protected void Awake()
         {
             xrRig = Camera.main;
@@ -733,7 +734,9 @@ namespace Unity.XR.PXR
             return hdrFlags;
         }
 
-        public enum HDRFlags
+#endif
+
+		public enum HDRFlags
         {
             None,
             HdrPQ,
