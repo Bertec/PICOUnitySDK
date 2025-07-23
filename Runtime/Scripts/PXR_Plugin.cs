@@ -2557,7 +2557,10 @@ namespace Unity.XR.PXR
                     result = Pxr_GetMRCEnable();
 #endif
                 }
-                PLog.d(TAG, "UPxr_GetMRCEnable() result:" + result);
+                if (PLog.logLevel <= PLog.LogLevel.LogDebug)
+                {
+                    PLog.d(TAG, "UPxr_GetMRCEnable() result:" + result);
+                }
                 return result;
             }
 

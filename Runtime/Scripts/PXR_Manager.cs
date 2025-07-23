@@ -1015,7 +1015,10 @@ namespace Unity.XR.PXR
 
         private void UpdateMRCCam()
         {
-            PLog.d(TAG_MRC, $"UpdateMRCCam. openMRC={openMRC}, initMRCSucceed={initMRCSucceed}");
+            if (PLog.logLevel <= PLog.LogLevel.LogDebug)
+            {
+                PLog.d(TAG_MRC, $"UpdateMRCCam. openMRC={openMRC}, initMRCSucceed={initMRCSucceed}");
+            }
             if (!openMRC || !initMRCSucceed) return;
 
             if (!PXR_Plugin.System.UPxr_GetMRCEnable())
@@ -1218,3 +1221,4 @@ namespace Unity.XR.PXR
         public PxrVector4f orientation;
     }
 }
+
