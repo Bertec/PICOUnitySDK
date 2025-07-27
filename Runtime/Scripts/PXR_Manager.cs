@@ -1017,7 +1017,8 @@ namespace Unity.XR.PXR
         {
             if (PLog.logLevel <= PLog.LogLevel.LogDebug)
             {
-                PLog.d(TAG_MRC, $"UpdateMRCCam. openMRC={openMRC}, initMRCSucceed={initMRCSucceed}");
+                //PLog.d(TAG_MRC, $"UpdateMRCCam. openMRC={openMRC}, initMRCSucceed={initMRCSucceed}");
+                PLog.d(TAG_MRC, "UpdateMRCCam. openMRC={0}, initMRCSucceed={1}", openMRC ? "true" : "false", initMRCSucceed? "true" : "false");
             }
             if (!openMRC || !initMRCSucceed) return;
 

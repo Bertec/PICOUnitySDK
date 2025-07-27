@@ -2559,7 +2559,8 @@ namespace Unity.XR.PXR
                 }
                 if (PLog.logLevel <= PLog.LogLevel.LogDebug)
                 {
-                    PLog.d(TAG, "UPxr_GetMRCEnable() result:" + result);
+                    //PLog.d(TAG, "UPxr_GetMRCEnable() result:" + result);
+                    PLog.d(TAG, "UPxr_GetMRCEnable() result: {0}", result ? "true" : "false");
                 }
                 return result;
             }
