@@ -13,7 +13,6 @@ PICO Technology Co., Ltd.
 #if UNITY_ANDROID && !UNITY_EDITOR
 using System.Runtime.InteropServices;
 #endif
-using Archon.SwissArmyLib.Utils;
 using UnityEngine;
 
 namespace Unity.XR.PXR
@@ -37,73 +36,73 @@ namespace Unity.XR.PXR
         public static void v(string tag, string message)
         {
             if (LogLevel.LogVerbose <= logLevel)
-                Debug.LogFormat("{0} FrameID={1}>>>>>>{2}", tag, BetterTime.FrameCount, message);
+                Debug.LogFormat("{0} FrameID={1}>>>>>>{2}", tag, Time.frameCount, message);
         }
 
         public static void d(string tag, string message)
         {
             if (LogLevel.LogDebug <= logLevel)
-                Debug.LogFormat("{0} FrameID={1}>>>>>>{2}", tag, BetterTime.FrameCount, message);
+                Debug.LogFormat("{0} FrameID={1}>>>>>>{2}", tag, Time.frameCount, message);
         }
 
         public static void i(string tag, string message)
         {
             if (LogLevel.LogInfo <= logLevel)
-                Debug.LogFormat("{0} FrameID={1}>>>>>>{2}", tag, BetterTime.FrameCount, message);
+                Debug.LogFormat("{0} FrameID={1}>>>>>>{2}", tag, Time.frameCount, message);
         }
 
         public static void w(string tag, string message)
         {
             if (LogLevel.LogWarn <= logLevel)
-                Debug.LogWarningFormat("{0} FrameID={1}>>>>>>{2}", tag, BetterTime.FrameCount, message);
+                Debug.LogWarningFormat("{0} FrameID={1}>>>>>>{2}", tag, Time.frameCount, message);
         }
 
         public static void e(string tag, string message)
         {
             if (LogLevel.LogError <= logLevel)
-                Debug.LogErrorFormat("{0} FrameID={1}>>>>>>{2}", tag, BetterTime.FrameCount, message);
+                Debug.LogErrorFormat("{0} FrameID={1}>>>>>>{2}", tag, Time.frameCount, message);
         }
 
         public static void f(string tag, string message)
         {
             if (LogLevel.LogFatal <= logLevel)
-                Debug.LogErrorFormat("{0} FrameID={1}>>>>>>{2}", tag, BetterTime.FrameCount, message);
+                Debug.LogErrorFormat("{0} FrameID={1}>>>>>>{2}", tag, Time.frameCount, message);
         }
 
         public static void d(string tag, string format, params object[] args)
         {
             if (LogLevel.LogDebug <= logLevel)
-                Debug.LogFormat("{0} FrameID={1}>>>>>>" + format, tag, BetterTime.FrameCount, args);
+                Debug.LogFormat("{0} FrameID={1}>>>>>>" + format, tag, Time.frameCount, args);
         }
 
         public static void v(string tag, string format, params object[] args)
         {
             if (LogLevel.LogVerbose <= logLevel)
-                Debug.LogFormat("{0} FrameID={1}>>>>>>" + format, tag, BetterTime.FrameCount, args);
+                Debug.LogFormat("{0} FrameID={1}>>>>>>" + format, tag, Time.frameCount, args);
         }
 
         public static void i(string tag, string format, params object[] args)
         {
             if (LogLevel.LogInfo <= logLevel)
-                Debug.LogFormat("{0} FrameID={1}>>>>>>" + format, tag, BetterTime.FrameCount, args);
+                Debug.LogFormat("{0} FrameID={1}>>>>>>" + format, tag, Time.frameCount, args);
         }
 
         public static void w(string tag, string format, params object[] args)
         {
             if (LogLevel.LogWarn <= logLevel)
-                Debug.LogWarningFormat("{0} FrameID={1}>>>>>>" + format, tag, BetterTime.FrameCount, args);
+                Debug.LogWarningFormat("{0} FrameID={1}>>>>>>" + format, tag, Time.frameCount, args);
         }
 
         public static void e(string tag, string format, params object[] args)
         {
             if (LogLevel.LogError <= logLevel)
-                Debug.LogErrorFormat("{0} FrameID={1}>>>>>>" + format, tag, BetterTime.FrameCount, args);
+                Debug.LogErrorFormat("{0} FrameID={1}>>>>>>" + format, tag, Time.frameCount, args);
         }
 
         public static void f(string tag, string format, params object[] args)
         {
             if (LogLevel.LogFatal <= logLevel)
-                Debug.LogErrorFormat("{0} FrameID={1}>>>>>>" + format, tag, BetterTime.FrameCount, args);
+                Debug.LogErrorFormat("{0} FrameID={1}>>>>>>" + format, tag, Time.frameCount, args);
         }
     }
 }
